@@ -3,19 +3,19 @@ package com.example.scoreapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.scoreapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding mBinding;
-        private int scoreA, scoreB;
-        private int saveA,saveB;
+    private int scoreA, scoreB;
+    private int saveA,saveB;
     private final String KEY = "key";
     private final String MY_SP = "my_sp", SP_A = "sp_a", SP_B = "sp_b";
 
-    public MainActivity() {
-    }
+
 
 
     @Override
@@ -51,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
            });
 
     }
+
+    private void writeSP() {
+        SharedPreferences.Editor sp = getSharedPreferences(MY_SP, MODE_PRIVATE).edit();
+        sp.putInt(SP_A, scoreA).putInt(SP_B, scoreB).apply();
+    }
+
+
+
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -86,11 +94,5 @@ public class MainActivity extends AppCompatActivity {
         mBinding.textScoreB.setText(String.valueOf(scoreB));
     }
 
-    public void setSaveA(int saveA) {
-        this.saveA = saveA;
-    }
 
-    public void setSaveB(int saveB) {
-        this.saveB = saveB;
-    }
 }
