@@ -24,8 +24,19 @@ public class MainActivity extends AppCompatActivity {
             mBinding = ActivityMainBinding.inflate(getLayoutInflater());
             setContentView(mBinding.getRoot());
 
+        if (savedInstanceState != null) {
+            int[] i = savedInstanceState.getIntArray(KEY);
+            scoreA = i[0];
+            scoreB = i[1];
+            saveA = i[2];
+            saveB = i[3];
+        } else {
+            init();
+        }
+        readSP();
+        show();
 
-            mBinding.buttonAAdd1.setOnClickListener(v -> {
+        mBinding.buttonAAdd1.setOnClickListener(v -> {
                 addA(1);
             });
             mBinding.buttonAAdd2.setOnClickListener(v -> {
@@ -57,6 +68,17 @@ public class MainActivity extends AppCompatActivity {
         sp.putInt(SP_A, scoreA).putInt(SP_B, scoreB).apply();
     }
 
+    private void readSP() {
+        SharedPreferences sp = getSharedPreferences(MY_SP, MODE_PRIVATE);
+        scoreA = sp.getInt(SP_A, 0);
+        scoreB = sp.getInt(SP_B, 0);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        writeSP();
+    }
 
 
     @Override
@@ -92,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
     public void show() {
         mBinding.textScoreA.setText(String.valueOf(scoreA));
         mBinding.textScoreB.setText(String.valueOf(scoreB));
+    }
+    private void init() {
+        scoreA = 0;
+        scoreB = 0;
+        saveA = 0;
+        saveB = 0;
+        show();
     }
 
 
